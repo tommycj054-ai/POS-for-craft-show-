@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Crochet POS — Phase 7</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"
+    ></script>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div>
+        <h1>🧶 Crochet POS</h1>
+        <p>Phase 7 — Craft Fair Point of Sale</p>
+    </div>
+</header>
+
+
+<nav class="main-nav">
+
+    <button class="nav-btn active" data-page="dashboard">
+        📊 Dashboard
+    </button>
+
+    <button class="nav-btn" data-page="checkout">
+        🛒 Checkout
+    </button>
+
+    <button class="nav-btn" data-page="inventory">
+        📦 Inventory
+    </button>
+
+    <button class="nav-btn" data-page="barcodes">
+        🏷️ Barcodes
+    </button>
+
+    <button class="nav-btn" data-page="stockScanner">
+        📷 Stock Scanner
+    </button>
+
+    <button class="nav-btn" data-page="events">
+        🎪 Craft Fairs
+    </button>
+
+    <button class="nav-btn" data-page="sales">
+        💰 Sales
+    </button>
+
+</nav>
+
+
+<main>
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section id="dashboard" class="page active">
+
+    <div class="page-heading">
+        <div>
+            <h2>Dashboard</h2>
+            <p>Overview of your crochet business.</p>
+        </div>
+
+        <button
+            class="primary-btn"
+            onclick="showPage('checkout')"
+        >
+            🛒 New Sale
+        </button>
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <span>📦</span>
+            <strong id="dashboardProducts">0</strong>
+            <small>Products</small>
+        </div>
+
+        <div class="stat-card">
+            <span>🧸</span>
+            <strong id="dashboardStock">0</strong>
+            <small>Total Stock</small>
+        </div>
+
+        <div class="stat-card">
+            <span>⚠️</span>
+            <strong id="dashboardLowStock">0</strong>
+            <small>Low Stock</small>
+        </div>
+
+        <div class="stat-card">
+            <span>💰</span>
+            <strong id="dashboardSales">$0.00</strong>
+            <small>Total Sales</small>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-columns">
+
+        <div class="panel">
+            <h3>⚠️ Low Stock</h3>
+            <div id="dashboardLowStockList"></div>
+        </div>
+
+        <div class="panel">
+            <h3>🏆 Best Sellers</h3>
+            <div id="dashboardBestSellers"></div>
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CHECKOUT
+===================================================== -->
+
+<section id="checkout" class="page">
+
+    <div class="page-heading">
+
+        <div>
+            <h2>Checkout</h2>
+            <p>Scan or tap a product to add it to the cart.</p>
+        </div>
+
+    </div>
+
+
+    <div class="checkout-layout">
+
+
+        <div class="checkout-products-area">
+
+
+            <div class="scanner-box">
+
+                <div class="scanner-title">
+
+                    <span>▣</span>
+
+                    <div>
+                        <h3>Barcode Scanner</h3>
+                        <p>Scan a barcode and press Enter.</p>
+                    </div>
+
+                </div>
+
+
+                <input
+                    id="checkoutBarcodeInput"
+                    class="scanner-input"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Scan barcode here..."
+                >
+
+                <div
+                    id="checkoutScanMessage"
+                    class="scan-message"
+                >
+                    Ready to scan
+                </div>
+
+            </div>
+
+
+            <input
+                id="checkoutSearch"
+                class="checkout-search"
+                type="search"
+                placeholder="Search products..."
+            >
+
+
+            <div
+                id="checkoutProducts"
+                class="checkout-product-grid"
+            ></div>
+
+        </div>
+
+
+
+        <!-- CART -->
+
+        <aside class="side-cart">
+
+            <div class="cart-header">
+
+                <div>
+                    <h2>Cart</h2>
+                    <span id="cartItemCount">
+                        0 items
+                    </span>
+                </div>
+
+                <button
+                    id="clearCart"
+                    class="small-btn"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+
+            <div
+                id="cartItems"
+                class="cart-items"
+            ></div>
+
+
+            <div class="cart-footer">
+
+                <div class="cart-subtotal">
+
+                    <span>Subtotal</span>
+
+                    <strong id="cartSubtotal">
+                        $0.00
+                    </strong>
+
+                </div>
+
+
+                <div class="cart-total">
+
+                    <span>Total</span>
+
+                    <strong id="cartTotal">
+                        $0.00
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-buttons">
+
+                    <button
+                        id="cashCheckout"
+                        class="cash-btn"
+                    >
+                        💵 Cash
+                    </button>
+
+                    <button
+                        id="cardCheckout"
+                        class="card-btn"
+                    >
+                        💳 Card
+                    </button>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     INVENTORY
+===================================================== -->
+
+<section id="inventory" class="page">
+
+    <div class="page-heading">
+
+        <div>
+            <h2>Inventory</h2>
+            <p>Manage your crochet products.</p>
+        </div>
+
+        <button
+            id="openAddProduct"
+            class="primary-btn"
+        >
+            + Add Product
+        </button>
+
+    </div>
+
+
+    <div class="toolbar">
+
+        <input
+            id="inventorySearch"
+            type="search"
+            placeholder="Search inventory..."
+        >
+
+    </div>
+
+
+    <div
+        id="inventoryList"
+        class="inventory-grid"
+    ></div>
+
+</section>
+
+
+
+<!-- =====================================================
+     BARCODES
+===================================================== -->
+
+<section id="barcodes" class="page">
+
+    <div class="page-heading">
+
+        <div>
+            <h2>Barcodes</h2>
+            <p>Create and print product barcode labels.</p>
+        </div>
+
+    </div>
+
+
+    <div class="panel label-settings">
+
+        <div>
+            <h3>Label Size</h3>
+            <p>Choose the size of your printed labels.</p>
+        </div>
+
+
+        <div class="label-controls">
+
+            <select id="labelSize">
+
+                <option value="small">
+                    Small — 1.5 × 1"
+                </option>
+
+                <option value="medium">
+                    Medium — 2 × 1.25"
+                </option>
+
+                <option value="large">
+                    Large — 3 × 2"
+                </option>
+
+                <option value="custom">
+                    Custom
+                </option>
+
+            </select>
+
+
+            <div
+                id="customLabelControls"
+                class="custom-label-controls"
+            >
+
+                <input
+                    id="customWidth"
+                    type="number"
+                    step="0.1"
+                    placeholder="Width"
+                >
+
+                <input
+                    id="customHeight"
+                    type="number"
+                    step="0.1"
+                    placeholder="Height"
+                >
+
+                <button
+                    id="applyCustomSize"
+                    class="small-btn"
+                >
+                    Apply
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="barcode-toolbar">
+
+        <button
+            id="selectAllBarcodes"
+            class="secondary-btn"
+        >
+            Select All
+        </button>
+
+        <button
+            id="clearBarcodeSelection"
+            class="secondary-btn"
+        >
+            Clear
+        </button>
+
+        <button
+            id="printBarcodes"
+            class="primary-btn"
+        >
+            🖨️ Print Selected
+        </button>
+
+        <span id="barcodeSelectionCount">
+            0 selected
+        </span>
+
+    </div>
+
+
+    <div
+        id="barcodeList"
+        class="barcode-grid"
+    ></div>
+
+</section>
+
+
+
+<!-- =====================================================
+     STOCK SCANNER
+===================================================== -->
+
+<section id="stockScanner" class="page">
+
+    <div class="page-heading">
+
+        <div>
+            <h2>Stock Scanner</h2>
+            <p>Scan a product to add or remove one item.</p>
+        </div>
+
+    </div>
+
+
+    <div class="stock-scanner-layout">
+
+        <div class="stock-scanner-main">
+
+            <div class="stock-scanner-card">
+
+                <div class="big-scanner-icon">
+                    📷
+                </div>
+
+                <h2>Scan Product</h2>
+
+                <p>
+                    Scan a barcode and press Enter.
+                </p>
+
+
+                <input
+                    id="stockBarcodeInput"
+                    class="big-scanner-input"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Scan barcode..."
+                >
+
+
+                <div
+                    id="stockScanMessage"
+                    class="scan-message"
+                >
+                    Ready to scan
+                </div>
+
+            </div>
+
+
+            <div
+                id="stockProductCard"
+                class="stock-product-card hidden"
+            >
+
+                <div
+                    id="stockProductName"
+                    class="stock-product-name"
+                ></div>
+
+                <div
+                    id="stockProductSKU"
+                    class="stock-product-sku"
+                ></div>
+
+
+                <div class="current-stock">
+
+                    <span>Current Stock</span>
+
+                    <strong
+                        id="stockProductCount"
+                    >
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stock-buttons">
+
+                    <button
+                        id="addStockButton"
+                        class="stock-add-btn"
+                    >
+                        + Add 1
+                    </button>
+
+                    <button
+                        id="removeStockButton"
+                        class="stock-remove-btn"
+                    >
+                        − Remove 1
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel stock-help">
+
+            <h3>How it works</h3>
+
+            <ol>
+
+                <li>Scan a product barcode.</li>
+
+                <li>Check the current stock.</li>
+
+                <li>Tap Add 1 or Remove 1.</li>
+
+                <li>Scan another product.</li>
+
+            </ol>
+
+            <div class="tip">
+                💡 Your inventory updates automatically.
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     EVENTS
+===================================================== -->
+
+<section id="events" class="page">
+
+    <div class="page-heading">
+
+        <div>
+            <h2>Craft Fairs</h2>
+            <p>Track sales for each craft fair.</p>
+        </div>
+
+        <button
+            id="newEvent"
+            class="primary-btn"
+        >
+            + New Craft Fair
+        </button>
+
+    </div>
+
+
+    <div id="activeEvent"></div>
+
+
+    <div
+        id="eventsList"
+        class="events-grid"
+    ></div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SALES
+===================================================== -->
+
+<section id="sales" class="page">
+
+    <div class="page-heading">
+
+        <div>
+            <h2>Sales</h2>
+            <p>View transactions and undo mistakes.</p>
+        </div>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <strong id="salesTotal">$0.00</strong>
+            <small>Total Sales</small>
+        </div>
+
+        <div class="stat-card">
+            <strong id="salesItems">0</strong>
+            <small>Items Sold</small>
+        </div>
+
+        <div class="stat-card">
+            <strong id="salesTransactions">0</strong>
+            <small>Transactions</small>
+        </div>
+
+        <div class="stat-card">
+            <strong id="salesCash">$0.00</strong>
+            <small>Cash Sales</small>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-columns">
+
+        <div class="panel">
+
+            <h3>🏆 Best Sellers</h3>
+
+            <div id="bestSellers"></div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h3>💳 Payment Breakdown</h3>
+
+            <div id="paymentBreakdown"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel sales-history-panel">
+
+        <h3>Sales History</h3>
+
+        <div id="salesHistory"></div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+
+<!-- =====================================================
+     PRODUCT MODAL
+===================================================== -->
+
+<div
+    id="productModal"
+    class="modal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2 id="productModalTitle">
+                Add Product
+            </h2>
+
+            <button
+                id="closeProductModal"
+                class="close-modal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <label>Product Name</label>
+
+        <input
+            id="productName"
+            type="text"
+            placeholder="Example: Crochet Octopus"
+        >
+
+
+        <label>Category</label>
+
+        <input
+            id="productCategory"
+            type="text"
+            placeholder="Example: Plushies"
+        >
+
+
+        <label>Price</label>
+
+        <input
+            id="productPrice"
+            type="number"
+            step="0.01"
+            min="0"
+            placeholder="5.00"
+        >
+
+
+        <label>Starting Stock</label>
+
+        <input
+            id="productStock"
+            type="number"
+            min="0"
+            placeholder="10"
+        >
+
+
+        <label>Low Stock Warning</label>
+
+        <input
+            id="productLowStock"
+            type="number"
+            min="0"
+            value="2"
+        >
+
+
+        <label>SKU / Barcode</label>
+
+        <input
+            id="productSKU"
+            type="text"
+            placeholder="Leave blank to generate one"
+        >
+
+
+        <!-- BUNDLE -->
+
+        <div class="bundle-box">
+
+            <div class="bundle-title">
+                🧺 Bundle Offer
+            </div>
+
+            <p>
+                Optional. Example: Buy 2 for $3.
+            </p>
+
+
+            <div class="bundle-input-grid">
+
+                <div>
+
+                    <label>
+                        Quantity
+                    </label>
+
+                    <input
+                        id="bundleQuantity"
+                        type="number"
+                        min="2"
+                        placeholder="2"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Bundle Price
+                    </label>
+
+                    <input
+                        id="bundlePrice"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        placeholder="3.00"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="clearBundle"
+                class="small-btn"
+            >
+                Remove Bundle
+            </button>
+
+        </div>
+
+
+        <div class="modal-buttons">
+
+            <button
+                id="cancelProduct"
+                class="secondary-btn"
+            >
+                Cancel
+            </button>
+
+            <button
+                id="saveProduct"
+                class="primary-btn"
+            >
+                Save Product
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     EVENT MODAL
+===================================================== -->
+
+<div
+    id="eventModal"
+    class="modal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>New Craft Fair</h2>
+
+            <button
+                id="closeEventModal"
+                class="close-modal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <label>Craft Fair Name</label>
+
+        <input
+            id="eventName"
+            type="text"
+            placeholder="October Craft Fair"
+        >
+
+
+        <label>Date</label>
+
+        <input
+            id="eventDate"
+            type="date"
+        >
+
+
+        <div class="modal-buttons">
+
+            <button
+                id="cancelEvent"
+                class="secondary-btn"
+            >
+                Cancel
+            </button>
+
+            <button
+                id="saveEvent"
+                class="primary-btn"
+            >
+                Create
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CASH MODAL
+===================================================== -->
+
+<div
+    id="cashModal"
+    class="modal"
+>
+
+    <div class="modal-box cash-modal">
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>💵 Cash Payment</h2>
+
+                <p class="modal-subtitle">
+                    Enter the amount of cash received.
+                </p>
+
+            </div>
+
+            <button
+                id="closeCashModal"
+                class="close-modal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="cash-total-box">
+
+            <span>Total Due</span>
+
+            <strong id="cashTotalDue">
+                $0.00
+            </strong>
+
+        </div>
+
+
+        <div class="preset-title">
+            Quick Amount
+        </div>
+
+
+        <div class="cash-presets">
+
+            <button data-cash="exact">
+                Exact
+            </button>
+
+            <button data-cash="5">
+                $5
+            </button>
+
+            <button data-cash="10">
+                $10
+            </button>
+
+            <button data-cash="20">
+                $20
+            </button>
+
+            <button data-cash="50">
+                $50
+            </button>
+
+            <button data-cash="100">
+                $100
+            </button>
+
+        </div>
+
+
+        <label>
+            Cash Received
+        </label>
+
+        <input
+            id="cashReceived"
+            class="cash-input"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="0.00"
+        >
+
+
+        <div
+            id="cashChangeBox"
+            class="cash-change-box"
+        >
+
+            <span>Change</span>
+
+            <strong id="cashChange">
+                $0.00
+            </strong>
+
+        </div>
+
+
+        <div
+            id="cashError"
+            class="cash-error"
+        ></div>
+
+
+        <div class="modal-buttons">
+
+            <button
+                id="cancelCash"
+                class="secondary-btn"
+            >
+                Cancel
+            </button>
+
+            <button
+                id="completeCashSale"
+                class="primary-btn"
+            >
+                Complete Cash Sale
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CARD CONFIRMATION MODAL
+===================================================== -->
+
+<div
+    id="cardModal"
+    class="modal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>💳 Card Payment</h2>
+
+            <button
+                id="closeCardModal"
+                class="close-modal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="cash-total-box">
+
+            <span>Total Due</span>
+
+            <strong id="cardTotalDue">
+                $0.00
+            </strong>
+
+        </div>
+
+
+        <p class="card-instruction">
+            Confirm that the card payment has been completed.
+        </p>
+
+
+        <div class="modal-buttons">
+
+            <button
+                id="cancelCard"
+                class="secondary-btn"
+            >
+                Cancel
+            </button>
+
+            <button
+                id="completeCardSale"
+                class="primary-btn"
+            >
+                ✓ Payment Complete
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     PRINT AREA
+===================================================== -->
+
+<div id="printArea"></div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
