@@ -1339,15 +1339,87 @@ document
     );
 
 
+document
+    .getElementById(
+        "setBarcodeQuantities"
+    )
+    .addEventListener(
+        "click",
+        showBarcodeQuantities
+    );
+
+
+function showBarcodeQuantities() {
+
+    const panel = document.getElementById("barcodeQuantityPanel");
+    const list = document.getElementById("barcodeQuantityList");
+
+    if (!products.length) {
+        alert("Add a product first.");
+        return;
+    }
+
+    list.innerHTML = products.map(product => `
+        <div class="barcode-quantity-row">
+            <div>
+                <strong>${escapeHTML(product.name)}</strong>
+                <small>${escapeHTML(product.sku)}</small>
+            </div>
+            <input
+                class="barcode-quantity-input"
+                data-quantity-id="${product.id}"
+                type="number"
+                min="0"
+                step="1"
+                value="${Number(product.labelQuantity || 1)}"
+            >
+        </div>
+    `).join("");
+
+    panel.style.display = "block";
+    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+
+function getBarcodePrintQuantities() {
+
+    const quantities = new Map();
+
+    document.querySelectorAll(".barcode-quantity-input").forEach(input => {
+        const id = Number(input.dataset.quantityId);
+        const quantity = Math.max(0, Math.floor(Number(input.value) || 0));
+        quantities.set(id, quantity);
+    });
+
+    return quantities;
+}
+
+
+function getSelectedBarcodePrintItems() {
+
+    const quantities = getBarcodePrintQuantities();
+
+    const selected = products.filter(product => selectedBarcodes.has(product.id));
+    const expanded = [];
+
+    selected.forEach(product => {
+        const quantity = quantities.has(product.id)
+            ? quantities.get(product.id)
+            : 1;
+
+        for (let i = 0; i < quantity; i++) {
+            expanded.push(product);
+        }
+    });
+
+    return expanded;
+}
+
+
+
 function printBarcodes() {
 
-    const selected =
-        products.filter(
-            product =>
-                selectedBarcodes.has(
-                    product.id
-                )
-        );
+    const selected = getSelectedBarcodePrintItems();
 
 
     if (!selected.length) {
