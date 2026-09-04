@@ -1552,6 +1552,11 @@ main {
         height: 42%;
     }
 
+    /* Plush Tag labels keep the barcode compact while preserving scanability. */
+    .print-label {
+        box-sizing: border-box;
+    }
+
     .print-label-sku {
         font-size: 7px;
     }
