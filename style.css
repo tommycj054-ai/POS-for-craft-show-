@@ -422,6 +422,38 @@ main {
     font-weight: 700;
 }
 
+.barcode-quantity-panel {
+    margin-bottom: 18px;
+}
+
+.barcode-quantity-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.barcode-quantity-row strong,
+.barcode-quantity-row small {
+    display: block;
+}
+
+.barcode-quantity-row small {
+    color: var(--gray-600);
+    margin-top: 3px;
+}
+
+.barcode-quantity-input {
+    width: 80px;
+    padding: 9px;
+    border: 1px solid var(--gray-200);
+    border-radius: 9px;
+    text-align: center;
+    font-weight: 800;
+}
+
 .barcode-grid {
     display: grid;
 
