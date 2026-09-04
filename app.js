@@ -996,6 +996,13 @@ function changeLabelSize() {
 
     }
 
+    if (size === "plush") {
+
+        labelSettings.width = 2;
+        labelSettings.height = 0.9;
+
+    }
+
 
     if (size === "medium") {
 
