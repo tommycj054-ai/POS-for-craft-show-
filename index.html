@@ -441,6 +441,13 @@
             🖨️ Print Selected
         </button>
 
+        <button
+            id="setBarcodeQuantities"
+            class="secondary-btn"
+        >
+            🔢 Set Quantities
+        </button>
+
         <span id="barcodeSelectionCount">
             0 selected
         </span>
@@ -452,6 +459,16 @@
         id="barcodeList"
         class="barcode-grid"
     ></div>
+
+    <div
+        id="barcodeQuantityPanel"
+        class="panel barcode-quantity-panel"
+        style="display:none; margin-top:16px;"
+    >
+        <h3>🔢 Labels to Print</h3>
+        <p>Enter how many labels you want for each product.</p>
+        <div id="barcodeQuantityList"></div>
+    </div>
 
 </section>
 
