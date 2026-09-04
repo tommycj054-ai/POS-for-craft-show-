@@ -1506,6 +1506,17 @@ main {
         gap: 5px;
 
         padding: 0;
+
+        /* Keep each printed page to a maximum of 20 labels (5 rows × 4 columns). */
+        break-after: page;
+    }
+
+    .print-label:nth-child(20n + 1) {
+        break-before: page;
+    }
+
+    .print-label:first-child {
+        break-before: auto;
     }
 
     .print-label {
