@@ -4167,6 +4167,15 @@ function updateDashboard() {
             0
         );
 
+    const inventoryValue =
+        products.reduce(
+            (sum, product) =>
+                sum +
+                (Number(product.stock) *
+                 Number(product.price)),
+            0
+        );
+
 
     const lowStock =
         products.filter(
@@ -4216,7 +4225,14 @@ function updateDashboard() {
             "dashboardSales"
         )
         .textContent =
-        `$${totalSales.toFixed(2)}`;
+        `${totalSales.toFixed(2)}`;
+
+    document
+        .getElementById(
+            "dashboardInventoryValue"
+        )
+        .textContent =
+        `${inventoryValue.toFixed(2)}`;
 
 
     const lowList =
